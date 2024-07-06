@@ -1,9 +1,7 @@
-import {theme} from '../Constants/Colors';
-import {typography} from '../Constants/Typography';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {theme} from '../Constants/colors';
+import {typography} from '../Constants/typography';
 
 const generalTabBarOptions = () => {
-  const insets = useSafeAreaInsets();
   return {
     tabBarInactiveTintColor: theme.secondaryFontColor,
     tabBarInactiveBackgroundColor: theme.mainSurface,
@@ -23,7 +21,7 @@ const generalTabBarOptions = () => {
       paddingHorizontal: 10,
       paddingBottom: 0,
       paddingTop: 10,
-      marginBottom: insets.bottom,
+      marginBottom: 5,
     },
     headerShown: false,
   };
