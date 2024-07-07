@@ -7,26 +7,21 @@ import {
 } from 'react-native';
 import AnswerList from '../../Components/AnswerList.tsx';
 import {QuestionType, RootStackParamList} from '../../Types/Types.ts';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useGetCustomFetch from '../../Hooks/useGetCustomFetch.tsx';
 import requestUrls from '../../Backend/requestUrls.tsx';
 import useValidateUser from '../../Hooks/useValidateUser.tsx';
 import usePostCustomFetch from '../../Hooks/usePostCustomFetch.tsx';
 import {
   NavigationProp,
-  RouteProp,
   StackActions,
   useNavigation,
 } from '@react-navigation/native';
+import {useAppContext} from '../../Hooks/useAppContext.tsx';
 
-type QuestionScreenProps = {
-  route: RouteProp<RootStackParamList, 'QuestionScreen'>;
-};
-
-const QuestionScreen: React.FC<QuestionScreenProps> = ({route}) => {
+const QuestionScreen: React.FC = () => {
+  const {subjectType} = useAppContext();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {subjectType} = route.params;
-
   const [question, setQuestion] = useState<QuestionType>();
   const [rightAnswers, setRightAnswers] = useState<boolean>(false);
   const [questionAnswer, setQuestionAnswer] = useState<boolean | null>(null);
@@ -40,6 +35,11 @@ const QuestionScreen: React.FC<QuestionScreenProps> = ({route}) => {
 
   useEffect(() => {
     getQuestionsRequest(token.token);
+    console.log(requestUrls.getQuestion(subjectType));
+  }, [subjectType]);
+
+  useEffect(() => {
+    console.log(subjectType);
   }, [subjectType]);
 
   useEffect(() => {

@@ -17,8 +17,10 @@ import {
 } from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import {RootStackParamList} from '../../Types/Types.ts';
+import {useAppContext} from '../../Hooks/useAppContext.tsx';
 
 const LoginScreen = () => {
+  const {setSubjectType: setSubjectTypeContext} = useAppContext();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {logUserIn} = useAuth();
   const [username, setUsername] = useState('');
@@ -46,10 +48,8 @@ const LoginScreen = () => {
       return;
     }
 
-    console.log('Subject Type:', subjectType); // Log subjectType-ul selectat
-
     try {
-      await logUserIn(username, password);
+      logUserIn(username, password);
       navigation.dispatch(
         StackActions.replace('QuestionScreen', {subjectType}),
       );
@@ -81,12 +81,14 @@ const LoginScreen = () => {
             secureTextEntry={true}
           />
           <SelectList
-            setSelected={(val: React.SetStateAction<string>) =>
-              setSubjectType(val)
-            }
+            setSelected={(val: React.SetStateAction<string | null>) => {
+              setSubjectType(val);
+              setSubjectTypeContext(val);
+            }}
             data={data}
             save="value"
             boxStyles={styles.dropdown}
+            dropdownStyles={styles.dropdown}
           />
         </View>
         <View style={styles.bottomContainer}>
@@ -116,9 +118,8 @@ const styles = StyleSheet.create({
   },
   middleContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    marginTop: 200,
+    justifyContent: 'flex-end',
+    marginTop: 400,
   },
   bottomContainer: {
     alignItems: 'center',
@@ -148,7 +149,9 @@ const styles = StyleSheet.create({
   dropdown: {
     width: 300,
     marginTop: 20,
-    borderWidth: 3,
+    borderWidth: 2,
+    borderColor: 'black',
+    borderRadius: 20,
     backgroundColor: 'white',
   },
   button: {
