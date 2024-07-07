@@ -89,6 +89,7 @@ const LoginScreen = () => {
             save="value"
             boxStyles={styles.dropdown}
             dropdownStyles={styles.dropdown}
+            search={false}
           />
         </View>
         <View style={styles.bottomContainer}>
@@ -119,23 +120,12 @@ const styles = StyleSheet.create({
   middleContainer: {
     alignItems: 'center',
     justifyContent: 'flex-end',
-    marginTop: 400,
+    marginTop: 450,
   },
   bottomContainer: {
     alignItems: 'center',
     padding: 20,
     marginBottom: 150,
-  },
-  title: {
-    fontSize: 60,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  subtitle: {
-    fontSize: 20,
-    textAlign: 'center',
-    marginBottom: 20,
-    color: 'white',
   },
   inputField: {
     borderWidth: 2,
@@ -151,7 +141,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderWidth: 2,
     borderColor: 'black',
-    borderRadius: 20,
+    borderRadius: 30,
     backgroundColor: 'white',
   },
   button: {

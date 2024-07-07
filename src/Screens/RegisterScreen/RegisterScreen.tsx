@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, {useCallback, useState} from 'react';
 import {
   View,
   Text,
@@ -6,12 +6,13 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  ImageBackground,
 } from 'react-native';
 import {theme} from '../../Constants/Colors.ts';
 import {StackActions, useNavigation} from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import LinearGradient from 'react-native-linear-gradient';
-import requestUrls from "../../Backend/requestUrls.tsx";
+import requestUrls from '../../Backend/requestUrls.tsx';
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -26,6 +27,11 @@ const RegisterScreen = () => {
     {key: '2', value: '30142'},
     {key: '3', value: '30143'},
     {key: '4', value: '30144'},
+    {key: '5', value: '30144'},
+    {key: '6', value: '30144'},
+    {key: '7', value: '30144'},
+    {key: '8', value: '30144'},
+    {key: '9', value: '30144'},
   ];
 
   const handleFirstNameChange = useCallback((text: string) => {
@@ -78,39 +84,45 @@ const RegisterScreen = () => {
   };
 
   return (
-    <LinearGradient
-      colors={['#232526', '#414345']}
-      style={styles.gradientBackground}>
+    <ImageBackground
+      source={require('../../Images/QuestionScreen_Background.png')}
+      style={styles.imageBackground}>
       <View style={styles.container}>
         <View style={styles.middleContainer}>
-          <TextInput
-            style={styles.inputField}
-            placeholder={'Username'}
-            onChangeText={handleUsernameChange}
-          />
-          <TextInput
-            style={styles.inputField}
-            placeholder={'Parola'}
-            onChangeText={handlePasswordChange}
-            secureTextEntry={true}
-          />
-          <TextInput
-            style={styles.inputField}
-            placeholder={'Nume'}
-            onChangeText={handleLastNameChange}
-          />
-          <TextInput
-            style={styles.inputField}
-            placeholder={'Prenume'}
-            onChangeText={handleFirstNameChange}
-          />
+          <View style={styles.rowContainer}>
+            <TextInput
+              style={styles.inputField}
+              placeholder={'Username'}
+              onChangeText={handleUsernameChange}
+            />
+            <TextInput
+              style={styles.inputField}
+              placeholder={'Parola'}
+              onChangeText={handlePasswordChange}
+              secureTextEntry={true}
+            />
+          </View>
+          <View style={styles.rowContainer}>
+            <TextInput
+              style={styles.inputField}
+              placeholder={'Nume'}
+              onChangeText={handleLastNameChange}
+            />
+            <TextInput
+              style={styles.inputField}
+              placeholder={'Prenume'}
+              onChangeText={handleFirstNameChange}
+            />
+          </View>
           <SelectList
             setSelected={(val: React.SetStateAction<string>) =>
               setUserGroup(val)
             }
             data={data}
             save="value"
-            boxStyles={styles.dropdown} // Aplică stilul pentru dropdown
+            boxStyles={styles.dropdown}
+            dropdownStyles={styles.dropdown}
+            maxHeight={150}
           />
         </View>
         <View style={styles.bottomContainer}>
@@ -120,53 +132,62 @@ const RegisterScreen = () => {
           <TouchableOpacity
             style={styles.loginButton}
             onPress={handleLoginRedirect}>
-            <Text style={styles.buttonText}>LOGIN</Text>
+            <Text style={styles.buttonText}>CONECTARE</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </LinearGradient>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  gradientBackground: {
-    flex: 1,
-  },
   container: {
     flex: 1,
-    justifyContent: 'space-between', // Distribuie spațiul între containere
+    justifyContent: 'space-between',
+  },
+  imageBackground: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
   },
   middleContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1, // Ocupă spațiul rămas pentru a centra conținutul vertical
-    marginTop: 100,
+    marginTop: 450,
   },
-  bottomContainer: {
-    alignItems: 'center',
-    padding: 20,
-    marginBottom: 100, // Adaugă un spațiu dedesubtul containerului inferior
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   inputField: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 30,
     margin: 16,
     fontSize: 20,
-    width: 300, // Ajustează lățimea câmpului de input
+    width: 300,
     textAlign: 'center',
     backgroundColor: 'white',
   },
   dropdown: {
-    width: 300, // Ajustează lățimea dropdown-ului
+    width: 300,
     marginTop: 20,
+    borderWidth: 2,
+    borderColor: 'black',
+    borderRadius: 30,
     backgroundColor: 'white',
+  },
+  bottomContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    marginBottom: 150,
   },
   button: {
     backgroundColor: theme.startButton,
     width: 300,
     borderRadius: 30,
     paddingVertical: 10,
-    borderWidth: 0, // Elimină conturul
+    borderWidth: 0,
     marginBottom: 20,
   },
   loginButton: {
@@ -174,7 +195,6 @@ const styles = StyleSheet.create({
     width: 300,
     borderRadius: 30,
     paddingVertical: 10,
-    borderWidth: 0, // Elimină conturul
   },
   buttonText: {
     fontSize: 20,
