@@ -14,26 +14,33 @@ import useValidateUser from '../../Hooks/useValidateUser.tsx';
 import usePostCustomFetch from '../../Hooks/usePostCustomFetch.tsx';
 import {
   NavigationProp,
+  RouteProp,
   StackActions,
   useNavigation,
 } from '@react-navigation/native';
 
-const QuestionScreen = () => {
+type QuestionScreenProps = {
+  route: RouteProp<RootStackParamList, 'QuestionScreen'>;
+};
+
+const QuestionScreen: React.FC<QuestionScreenProps> = ({route}) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const {subjectType} = route.params;
+
   const [question, setQuestion] = useState<QuestionType>();
   const [rightAnswers, setRightAnswers] = useState<boolean>(false);
   const [questionAnswer, setQuestionAnswer] = useState<boolean | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   const {fetcher: getQuestionsRequest, response: questionsResponse} =
-    useGetCustomFetch<QuestionType, any>(requestUrls.getQuestion('sfi'));
+    useGetCustomFetch<QuestionType, any>(requestUrls.getQuestion(subjectType));
   const {fetcher: postAnswersRequest, response} = usePostCustomFetch<any, any>(
     requestUrls.validateQuestion(question?.id),
   );
   const token = useValidateUser();
 
   useEffect(() => {
-    getQuestionsRequest(token);
-  }, []);
+    getQuestionsRequest(token.token);
+  }, [subjectType]);
 
   useEffect(() => {
     if (questionsResponse) {
@@ -57,7 +64,7 @@ const QuestionScreen = () => {
   };
 
   const handleRedirectHome = () => {
-    navigation.dispatch(StackActions.replace('HomeScreen'));
+    navigation.dispatch(StackActions.replace('LoginScreen'));
   };
 
   useEffect(() => {
@@ -82,7 +89,9 @@ const QuestionScreen = () => {
         {questionAnswer === false ? (
           <View style={styles.errorTextContainer}>
             <Text style={styles.errorText}>Ooops!</Text>
-            <Text style={styles.errorText}>Ai pierdut!</Text>
+            <Text style={styles.errorText}>
+              Ai raspuns gresit la intrebare!
+            </Text>
           </View>
         ) : null}
         <View style={styles.questionContainer}>

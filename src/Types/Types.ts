@@ -1,6 +1,4 @@
-import {ImageSourcePropType} from 'react-native';
 import RouteKey from '../Navigation/Routes';
-import {FC, ReactElement} from 'react';
 
 export type FetchResponseGET<data, param> = {
   response: data | null;
@@ -18,8 +16,9 @@ export type FetchResponsePOST<data, param> = {
 
 export type RootStackParamList = {
   [RouteKey.WELCOME_SCREEN]: undefined;
-  [RouteKey.HOME_SCREEN]: undefined;
-  [RouteKey.QUESTION_SCREEN]: undefined;
+  [RouteKey.LOGIN_SCREEN]: undefined;
+  [RouteKey.QUESTION_SCREEN]: {subjectType: string};
+  [RouteKey.REGISTER_SCREEN]: undefined;
 };
 
 export type ErrorType = {
@@ -40,3 +39,4 @@ export type QuestionType = {
   subjectType: string;
   answers: AnswerType[];
 };
+

@@ -5,12 +5,15 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {RootStackParamList} from '../../Types/Types.ts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const VictoryScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleBackHome = () => {
-    navigation.dispatch(StackActions.replace('HomeScreen'));
+    AsyncStorage.clear().then(() =>
+      navigation.dispatch(StackActions.replace('LoginScreen')),
+    );
   };
 
   return (

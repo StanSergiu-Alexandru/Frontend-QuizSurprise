@@ -25,14 +25,13 @@ const useAuthService = () => {
 
   const logUserOut = async () => {
     await removeStorage('token');
-    navigation.dispatch(StackActions.replace(RouteKey.HOME_SCREEN));
+    navigation.dispatch(StackActions.replace(RouteKey.LOGIN_SCREEN));
     setToken('');
   };
 
   useEffect(() => {
     if (loginResponse) {
       if (loginResponse.token) {
-        console.log(loginResponse.token);
         setToken(loginResponse.token);
         navigation.dispatch(StackActions.replace(RouteKey.QUESTION_SCREEN));
       }

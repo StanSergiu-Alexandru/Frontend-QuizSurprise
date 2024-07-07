@@ -1,23 +1,17 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import RoutesMapping from './src/Navigation/Navigator.tsx';
-import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
-import {theme} from './src/Constants/Colors.ts';
+import {NavigationContainer} from '@react-navigation/native';
+import {AuthProvider} from './src/Hooks/useAuth.tsx';
 
-const MyTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: theme.mainSurface,
-  },
-};
-
-const App: React.FC = () => {
+function App(): React.JSX.Element {
   return (
-    <NavigationContainer theme={MyTheme}>
-      <RoutesMapping />
+    <NavigationContainer>
+      <AuthProvider>
+        <RoutesMapping />
+      </AuthProvider>
     </NavigationContainer>
   );
-};
+}
 
 export default App;

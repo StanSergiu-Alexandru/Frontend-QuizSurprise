@@ -9,7 +9,7 @@ const usePostCustomFetch = <Data extends any, Param extends any>(
   const [apiData, setApiData] = useState<any>(null);
   const [serverError, setServerError] = useState(null);
 
-  const fetcher = async (param?: Param, token?: string, isForm?: boolean) => {
+  const fetcher = async (param?: Param, token?: any, isForm?: boolean) => {
     setIsLoading(true);
     try {
       const request = await fetch(url, {

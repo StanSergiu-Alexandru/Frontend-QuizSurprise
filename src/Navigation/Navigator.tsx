@@ -4,13 +4,13 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {RootStackParamList} from '../Types/Types.ts';
 import {theme} from '../Constants/Colors.ts';
 import QuestionScreen from '../Screens/QuestionScreen/QuestionScreen.tsx';
-import HomeScreen from '../Screens/HomeScreen/HomeScreen.tsx';
+import LoginScreen from '../Screens/LoginScreen/LoginScreen.tsx';
 import VictoryScreen from '../Screens/VictoryScreen/VictoryScreen.tsx';
 import RegisterScreen from '../Screens/RegisterScreen/RegisterScreen.tsx';
 
 const screenRoutes = [
   {name: RouteKey.QUESTION_SCREEN, component: QuestionScreen},
-  {name: RouteKey.HOME_SCREEN, component: HomeScreen},
+  {name: RouteKey.LOGIN_SCREEN, component: LoginScreen},
   {name: RouteKey.VICTORY_SCREEN, component: VictoryScreen},
   {name: RouteKey.REGISTER_SCREEN, component: RegisterScreen},
 ];
@@ -25,7 +25,7 @@ const RoutesMapping: React.FC = () => {
   return (
     <Navigator
       screenOptions={screenOptions}
-      initialRouteName={RouteKey.QUESTION_SCREEN}>
+      initialRouteName={RouteKey.LOGIN_SCREEN}>
       {screenRoutes.map(route => (
         <Screen
           key={route.name}
