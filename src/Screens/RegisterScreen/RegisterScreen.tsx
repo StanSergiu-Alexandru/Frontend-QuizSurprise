@@ -11,8 +11,8 @@ import {
 import {theme} from '../../Constants/Colors.ts';
 import {StackActions, useNavigation} from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
-import LinearGradient from 'react-native-linear-gradient';
 import requestUrls from '../../Backend/requestUrls.tsx';
+import {userGroups} from '../../Constants/UserGroupData.ts';
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -21,18 +21,6 @@ const RegisterScreen = () => {
   const [lastName, setLastName] = useState('');
   const [firstName, setFirstName] = useState('');
   const [userGroup, setUserGroup] = useState('');
-
-  const data = [
-    {key: '1', value: '30141'},
-    {key: '2', value: '30142'},
-    {key: '3', value: '30143'},
-    {key: '4', value: '30144'},
-    {key: '5', value: '30144'},
-    {key: '6', value: '30144'},
-    {key: '7', value: '30144'},
-    {key: '8', value: '30144'},
-    {key: '9', value: '30144'},
-  ];
 
   const handleFirstNameChange = useCallback((text: string) => {
     setFirstName(text);
@@ -118,7 +106,7 @@ const RegisterScreen = () => {
             setSelected={(val: React.SetStateAction<string>) =>
               setUserGroup(val)
             }
-            data={data}
+            data={userGroups}
             save="value"
             boxStyles={styles.dropdown}
             dropdownStyles={styles.dropdown}
