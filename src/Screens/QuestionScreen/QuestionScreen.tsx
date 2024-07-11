@@ -6,7 +6,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import AnswerList from '../../Components/AnswerList.tsx';
-import {QuestionType, RootStackParamList} from '../../Types/Types.ts';
+import {
+  QuestionType,
+  RootStackParamList,
+} from '../../../../../../Types/Types.ts';
 import React, {useEffect, useState} from 'react';
 import useGetCustomFetch from '../../Hooks/useGetCustomFetch.tsx';
 import requestUrls from '../../Backend/requestUrls.tsx';
@@ -18,12 +21,16 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {useAppContext} from '../../Hooks/useAppContext.tsx';
+import RouteKey from '../../Navigation/Routes.ts';
 
 const QuestionScreen: React.FC = () => {
-  const {subjectType} = useAppContext();
+  const {
+    subjectType,
+    setHasUserWon,
+    setQuestion: setQuestionContext,
+  } = useAppContext();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [question, setQuestion] = useState<QuestionType>();
-  const [rightAnswers, setRightAnswers] = useState<boolean>(false);
   const [questionAnswer, setQuestionAnswer] = useState<boolean | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   const {fetcher: getQuestionsRequest, response: questionsResponse} =
@@ -35,16 +42,12 @@ const QuestionScreen: React.FC = () => {
 
   useEffect(() => {
     getQuestionsRequest(token.token);
-    console.log(requestUrls.getQuestion(subjectType));
   }, [subjectType]);
-
-  useEffect(() => {
-    console.log(token);
-  }, [token]);
 
   useEffect(() => {
     if (questionsResponse) {
       setQuestion(questionsResponse);
+      setQuestionContext(questionsResponse);
     }
   }, [questionsResponse]);
 
@@ -72,12 +75,9 @@ const QuestionScreen: React.FC = () => {
   }, [response]);
 
   useEffect(() => {
-    if (questionAnswer === true) {
-      navigation.dispatch(StackActions.replace('VictoryScreen'));
-    } else {
-      if (questionAnswer === false) {
-        setRightAnswers(true);
-      }
+    if (questionAnswer === false || questionAnswer === true) {
+      setHasUserWon(questionAnswer);
+      navigation.dispatch(StackActions.replace(RouteKey.SPIN_WHEEL_SCREEN));
     }
   }, [questionAnswer]);
 
@@ -86,14 +86,6 @@ const QuestionScreen: React.FC = () => {
       <ImageBackground
         source={require('../../Images/QuestionScreen_Background.png')}
         style={{flex: 1}}>
-        {questionAnswer === false ? (
-          <View style={styles.errorTextContainer}>
-            <Text style={styles.errorText}>Ooops!</Text>
-            <Text style={styles.errorText}>
-              Ai raspuns gresit la intrebare!
-            </Text>
-          </View>
-        ) : null}
         <View style={styles.questionContainer}>
           <Text style={styles.questionHeadline}>Intrebare:</Text>
           <Text style={styles.questionText}>{question?.question}</Text>
@@ -104,7 +96,6 @@ const QuestionScreen: React.FC = () => {
           answers={question?.answers}
           selectedAnswers={selectedAnswers}
           onSelectAnswer={handleSelectAnswer}
-          rightAnswers={rightAnswers}
         />
         {questionAnswer === null ? (
           <TouchableOpacity style={styles.button} onPress={validateAnswers}>

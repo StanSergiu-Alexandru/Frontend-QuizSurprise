@@ -1,5 +1,5 @@
-import {theme} from '../Constants/colors';
-import {typography} from '../Constants/typography';
+import {theme} from '../Constants/Colors';
+import {typography} from '../Constants/Typography';
 
 const generalTabBarOptions = () => {
   return {

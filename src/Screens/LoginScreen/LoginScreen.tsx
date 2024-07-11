@@ -16,7 +16,7 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
-import {RootStackParamList} from '../../Types/Types.ts';
+import {RootStackParamList} from '../../../../../../Types/Types.ts';
 import {useAppContext} from '../../Hooks/useAppContext.tsx';
 
 const LoginScreen = () => {
@@ -47,7 +47,6 @@ const LoginScreen = () => {
       Alert.alert('Validation Error', 'Toate câmpurile sunt obligatorii.');
       return;
     }
-
     logUserIn(username, password);
   };
 
@@ -59,10 +58,6 @@ const LoginScreen = () => {
     if (loginError !== null) {
       Alert.alert('eroare login');
     }
-  }, [loginError]);
-
-  useEffect(() => {
-    console.log(loginError);
   }, [loginError]);
 
   return (

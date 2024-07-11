@@ -1,45 +1,48 @@
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet, View} from 'react-native';
 import {FC} from 'react';
-import {AnswerType} from '../Types/Types.ts';
+import {AnswerType} from '../../../../../Types/Types.ts';
 
 interface AnswerListProps {
   answers: AnswerType[] | undefined;
-  selectedAnswers: string[];
+  selectedAnswers?: string[];
   onSelectAnswer: (id: string) => void;
-  rightAnswers: boolean | null;
+  isOnLossScreen?: boolean;
 }
 
 const AnswerList: FC<AnswerListProps> = ({
   answers,
   selectedAnswers,
   onSelectAnswer,
-  rightAnswers,
+  isOnLossScreen,
 }) => {
   return (
     <>
       {answers &&
         answers.map(answer => {
-          const isSelected = selectedAnswers.includes(answer.id.toString());
-          const isCorrect = rightAnswers && answer.isCorrect;
-          const isIncorrect = rightAnswers && !answer.isCorrect;
+          const isSelected = selectedAnswers?.includes(answer.id.toString());
+          const isCorrect = answer.isCorrect;
+          const isIncorrect = !answer.isCorrect;
+
+          if (isOnLossScreen) {
+            return (
+              <View
+                key={answer.id}
+                style={[
+                  styles.container,
+                  isCorrect && styles.correctContainer,
+                  isIncorrect && styles.incorrectContainer,
+                ]}>
+                <Text style={styles.text}>{answer.answer}</Text>
+              </View>
+            );
+          }
 
           return (
             <TouchableOpacity
               key={answer.id}
-              style={[
-                styles.container,
-                isSelected && styles.selectedContainer,
-                isCorrect && styles.correctContainer,
-                isIncorrect && styles.incorrectContainer,
-              ]}
+              style={[styles.container, isSelected && styles.selectedContainer]}
               onPress={() => onSelectAnswer(answer.id.toString())}>
-              <Text
-                style={[
-                  styles.text,
-                  isSelected && styles.selectedText,
-                  isCorrect && styles.correctText,
-                  isIncorrect && styles.incorrectText,
-                ]}>
+              <Text style={[styles.text, isSelected && styles.selectedText]}>
                 {answer.answer}
               </Text>
             </TouchableOpacity>
@@ -75,12 +78,6 @@ const styles = StyleSheet.create({
   },
   selectedText: {
     color: 'green',
-  },
-  correctText: {
-    color: 'green',
-  },
-  incorrectText: {
-    color: 'red',
   },
 });
 

@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {FetchResponseGET} from '../Types/Types';
+import {FetchResponseGET} from '../../../../../Types/Types';
 
 const useGetCustomFetch = <Data, Param>(
   url: RequestInfo,

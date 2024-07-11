@@ -1,5 +1,5 @@
-import {useState} from 'react';
-import {FetchResponsePOST} from '../Types/Types';
+import {useEffect, useState} from 'react';
+import {FetchResponsePOST} from '../../../../../Types/Types';
 
 const usePostCustomFetch = <Data extends any, Param extends any>(
   url: RequestInfo,
@@ -25,11 +25,10 @@ const usePostCustomFetch = <Data extends any, Param extends any>(
       });
 
       const response = await request.json();
-      if (response) {
-        setApiData(response);
+      if (response.error) {
+        setServerError(response);
       } else {
         setApiData(response);
-        setServerError(response);
       }
 
       setIsLoading(false);
@@ -43,7 +42,9 @@ const usePostCustomFetch = <Data extends any, Param extends any>(
     setIsLoading(false);
     setApiData(null);
     setIsLoading(false);
+    setServerError(null);
   };
+
   return {
     response: apiData,
     error: serverError,

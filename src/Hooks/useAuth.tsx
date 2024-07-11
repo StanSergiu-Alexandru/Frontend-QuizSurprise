@@ -7,12 +7,14 @@ import RouteKey from '../Navigation/Routes.ts';
 
 const useAuthService = () => {
   const {set: setToken} = usePersistentState('token');
+  const {set: setFirstName} = usePersistentState('first_name');
   const navigation = useNavigation();
   const {
     response: loginResponse,
     error: loginError,
     loading: loginLoading,
     fetcher: sendLoginPayload,
+    clear: clearLogin,
   } = usePostCustomFetch<any, any>(requestUrls.authLogin);
 
   const logUserIn = (username: string, password: string) => {
@@ -31,16 +33,14 @@ const useAuthService = () => {
 
   useEffect(() => {
     if (loginResponse) {
-      if (loginResponse.token != null) {
+      if (loginResponse.token) {
         setToken(loginResponse.token);
+        setFirstName(loginResponse.first_name);
+        clearLogin();
         navigation.dispatch(StackActions.replace(RouteKey.QUESTION_SCREEN));
       }
     }
   }, [loginError, loginResponse, loginLoading]);
-
-  useEffect(() => {
-    console.log('loginresponse.token', loginResponse);
-  }, [loginResponse]);
 
   return {
     logUserIn,

@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type localStorageKeys = {
   token?: string;
+  first_name?: string;
 };
 
 const getStorage = async (key: string) => {

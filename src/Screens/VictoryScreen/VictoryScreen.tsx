@@ -4,16 +4,22 @@ import {
   StackActions,
   useNavigation,
 } from '@react-navigation/native';
-import {RootStackParamList} from '../../Types/Types.ts';
+import {RootStackParamList} from '../../../../../../Types/Types.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import usePersistentState from '../../Hooks/usePersistentState.tsx';
 
 const VictoryScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const {store: first_name} = usePersistentState('first_name');
 
   const handleBackHome = () => {
     AsyncStorage.clear().then(() =>
       navigation.dispatch(StackActions.replace('LoginScreen')),
     );
+  };
+
+  const handleNavigation = () => {
+    navigation.dispatch(StackActions.replace('SpinWheelScreen'));
   };
 
   return (
@@ -24,11 +30,9 @@ const VictoryScreen = () => {
         resizeMode={'cover'}
       />
       <View style={styles.contentContainer}>
-        <Text style={styles.text}>Felicitari, Sergiu</Text>
+        <Text style={styles.text}>Felicitari, {first_name}!</Text>
         <Text style={styles.text}>Ai raspuns corect la intrebare!</Text>
-        <TouchableOpacity style={styles.wheelButton}>
-          <Text style={styles.buttonText}>Invarte Roata</Text>
-        </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.backHomeButton}
           onPress={handleBackHome}>
@@ -52,15 +56,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
     color: 'black',
   },
-  wheelButton: {
-    backgroundColor: '#14F201',
-    width: '80%',
-    height: 70,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 50,
-  },
+
   backHomeButton: {
     backgroundColor: 'red',
     width: '80%',
