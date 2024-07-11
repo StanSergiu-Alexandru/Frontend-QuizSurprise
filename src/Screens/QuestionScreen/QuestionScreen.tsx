@@ -39,8 +39,8 @@ const QuestionScreen: React.FC = () => {
   }, [subjectType]);
 
   useEffect(() => {
-    console.log(subjectType);
-  }, [subjectType]);
+    console.log(token);
+  }, [token]);
 
   useEffect(() => {
     if (questionsResponse) {

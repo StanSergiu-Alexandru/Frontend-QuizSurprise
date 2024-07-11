@@ -29,6 +29,7 @@ const usePostCustomFetch = <Data extends any, Param extends any>(
         setApiData(response);
       } else {
         setApiData(response);
+        setServerError(response);
       }
 
       setIsLoading(false);
@@ -38,11 +39,17 @@ const usePostCustomFetch = <Data extends any, Param extends any>(
     }
   };
 
+  const clear = () => {
+    setIsLoading(false);
+    setApiData(null);
+    setIsLoading(false);
+  };
   return {
     response: apiData,
     error: serverError,
     loading: isLoading,
     fetcher,
+    clear,
   };
 };
 

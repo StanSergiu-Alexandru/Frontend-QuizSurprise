@@ -31,17 +31,22 @@ const useAuthService = () => {
 
   useEffect(() => {
     if (loginResponse) {
-      if (loginResponse.token) {
+      if (loginResponse.token != null) {
         setToken(loginResponse.token);
         navigation.dispatch(StackActions.replace(RouteKey.QUESTION_SCREEN));
       }
     }
   }, [loginError, loginResponse, loginLoading]);
 
+  useEffect(() => {
+    console.log('loginresponse.token', loginResponse);
+  }, [loginResponse]);
+
   return {
     logUserIn,
     logUserOut,
     loginResponse,
+    loginError,
   };
 };
 
@@ -49,6 +54,7 @@ const initialState = {
   logUserIn: (user: string, pass: string) => undefined,
   logUserOut: () => undefined,
   loginResponse: '',
+  loginError: '',
 };
 
 export const AuthContext = createContext<

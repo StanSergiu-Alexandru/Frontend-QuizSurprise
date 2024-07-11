@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -22,7 +22,7 @@ import {useAppContext} from '../../Hooks/useAppContext.tsx';
 const LoginScreen = () => {
   const {setSubjectType: setSubjectTypeContext} = useAppContext();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {logUserIn} = useAuth();
+  const {logUserIn, loginError} = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [subjectType, setSubjectType] = useState<string | null>(null);
@@ -48,20 +48,22 @@ const LoginScreen = () => {
       return;
     }
 
-    try {
-      logUserIn(username, password);
-      navigation.dispatch(
-        StackActions.replace('QuestionScreen', {subjectType}),
-      );
-    } catch (error) {
-      console.error('Login failed', error);
-      Alert.alert('Login Error', 'Username sau parola gresita.');
-    }
+    logUserIn(username, password);
   };
 
   const handleRegisterRedirect = () => {
     navigation.dispatch(StackActions.replace('RegisterScreen'));
   };
+
+  useEffect(() => {
+    if (loginError !== null) {
+      Alert.alert('eroare login');
+    }
+  }, [loginError]);
+
+  useEffect(() => {
+    console.log(loginError);
+  }, [loginError]);
 
   return (
     <ImageBackground
