@@ -32,7 +32,14 @@ const AnswerList: FC<AnswerListProps> = ({
                   isCorrect && styles.correctContainer,
                   isIncorrect && styles.incorrectContainer,
                 ]}>
-                <Text style={styles.text}>{answer.answer}</Text>
+                <Text
+                  style={[
+                    styles.text,
+                    isCorrect && styles.correctText,
+                    isIncorrect && styles.incorrectText,
+                  ]}>
+                  {answer.answer}
+                </Text>
               </View>
             );
           }
@@ -58,7 +65,7 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: 'white',
     borderRadius: 10,
-    borderWidth: 1,
+    borderWidth: 2,
     justifyContent: 'center',
     marginVertical: 10,
   },
@@ -67,9 +74,11 @@ const styles = StyleSheet.create({
   },
   correctContainer: {
     borderColor: 'green',
+    borderWidth: 3,
   },
   incorrectContainer: {
     borderColor: 'red',
+    borderWidth: 3,
   },
   text: {
     alignSelf: 'center',
@@ -78,6 +87,12 @@ const styles = StyleSheet.create({
   },
   selectedText: {
     color: 'green',
+  },
+  correctText: {
+    color: 'green',
+  },
+  incorrectText: {
+    color: 'red',
   },
 });
 

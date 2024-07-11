@@ -100,7 +100,8 @@ const styles = StyleSheet.create({
 
   buttonText: {
     fontSize: 30,
-    color: 'black',
+    color: 'white',
+    fontWeight: 'bold',
   },
   textContainer: {
     position: 'absolute',

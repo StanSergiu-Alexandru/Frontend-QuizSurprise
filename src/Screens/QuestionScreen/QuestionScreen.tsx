@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     left: '10%',
     backgroundColor: 'white',
     borderRadius: 20,
-    borderWidth: 1,
+    borderWidth: 2,
     justifyContent: 'center',
   },
   questionText: {
@@ -142,13 +142,13 @@ const styles = StyleSheet.create({
     width: 300,
     borderRadius: 30,
     paddingVertical: 5,
-    borderWidth: 1,
     marginTop: 20,
   },
   buttonText: {
     fontSize: 30,
     alignSelf: 'center',
     color: 'white',
+    fontWeight: 'bold',
   },
   questionHeadline: {
     position: 'absolute',

@@ -29,9 +29,7 @@ const LoseScreen = () => {
           style={styles.image}
           source={require('../../Images/sadFace.png')}
         />
-        <Text style={styles.text}>
-          Din pacate ai raspuns gresit la intrebare!
-        </Text>
+        <Text style={styles.text}>Oops! Ai raspuns gresit la intrebare.</Text>
       </View>
       <View style={styles.textContainer}>
         <View style={styles.contentContainer}>
@@ -64,6 +62,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
+    marginBottom: 50,
   },
   image: {},
   textContainer: {
@@ -78,7 +77,6 @@ const styles = StyleSheet.create({
     left: '10%',
     backgroundColor: 'white',
     borderRadius: 20,
-    borderWidth: 1,
     justifyContent: 'center',
   },
   questionText: {
@@ -87,9 +85,9 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   text: {
-    fontSize: 25,
+    fontSize: 35,
     alignSelf: 'center',
-    color: 'black',
+    color: 'red',
   },
   contentContainer: {
     flex: 1,
@@ -109,6 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     alignSelf: 'center',
     color: 'white',
+    fontWeight: 'bold',
   },
   questionHeadline: {
     position: 'absolute',
