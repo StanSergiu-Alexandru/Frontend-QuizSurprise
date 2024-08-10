@@ -81,11 +81,13 @@ const RegisterScreen = () => {
             <TextInput
               style={styles.inputField}
               placeholder={'Username'}
+              placeholderTextColor={'#A9A9A9'}
               onChangeText={handleUsernameChange}
             />
             <TextInput
               style={styles.inputField}
               placeholder={'Parola'}
+              placeholderTextColor={'#A9A9A9'}
               onChangeText={handlePasswordChange}
               secureTextEntry={true}
             />
@@ -94,11 +96,13 @@ const RegisterScreen = () => {
             <TextInput
               style={styles.inputField}
               placeholder={'Nume'}
+              placeholderTextColor={'#A9A9A9'}
               onChangeText={handleLastNameChange}
             />
             <TextInput
               style={styles.inputField}
               placeholder={'Prenume'}
+              placeholderTextColor={'#A9A9A9'}
               onChangeText={handleFirstNameChange}
             />
           </View>
@@ -110,6 +114,8 @@ const RegisterScreen = () => {
             save="value"
             boxStyles={styles.dropdown}
             dropdownStyles={styles.dropdown}
+            inputStyles={{color: 'black'}}
+            dropdownTextStyles={{color: 'black'}}
             maxHeight={150}
           />
         </View>
@@ -155,6 +161,7 @@ const styles = StyleSheet.create({
     width: 300,
     textAlign: 'center',
     backgroundColor: 'white',
+    color: 'black',
   },
   dropdown: {
     width: 300,

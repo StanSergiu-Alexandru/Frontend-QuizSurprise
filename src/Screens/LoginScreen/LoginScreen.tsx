@@ -69,11 +69,13 @@ const LoginScreen = () => {
           <TextInput
             style={styles.inputField}
             placeholder={'Nume utilizator'}
+            placeholderTextColor={'#A9A9A9'}
             onChangeText={handleUsernameChange}
           />
           <TextInput
             style={styles.inputField}
             placeholder={'Parola'}
+            placeholderTextColor={'#A9A9A9'}
             onChangeText={handlePasswordChange}
             secureTextEntry={true}
           />
@@ -86,6 +88,8 @@ const LoginScreen = () => {
             save="value"
             boxStyles={styles.dropdown}
             dropdownStyles={styles.dropdown}
+            inputStyles={{color: 'black'}}
+            dropdownTextStyles={{color: 'black'}}
             search={false}
           />
         </View>
@@ -132,6 +136,7 @@ const styles = StyleSheet.create({
     width: 300,
     textAlign: 'center',
     backgroundColor: 'white',
+    color: 'black',
   },
   dropdown: {
     width: 300,
