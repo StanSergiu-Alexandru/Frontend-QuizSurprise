@@ -8,6 +8,7 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {RootStackParamList} from '../../../../../../Types/Types.ts';
+import RNBluetoothClassic from "react-native-bluetooth-classic";
 
 const LoseScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -18,7 +19,15 @@ const LoseScreen = () => {
     console.log(question);
   }, [question]);
 
+  const sendDeviceData = async (message:string)  => {
+    await RNBluetoothClassic.writeToDevice(
+      "98:D3:91:FD:F7:E2",
+      message,
+    );
+  }
+
   const handleRedirectHome = () => {
+    sendDeviceData("C");
     navigation.dispatch(StackActions.replace('LoginScreen'));
   };
 

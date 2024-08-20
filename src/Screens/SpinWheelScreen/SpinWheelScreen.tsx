@@ -7,8 +7,8 @@ import {
   Animated,
   TouchableOpacity,
   Easing,
-  Text,
-} from 'react-native';
+  Text, Alert
+} from "react-native";
 import {useAppContext} from '../../Hooks/useAppContext.tsx';
 import {
   NavigationProp,
@@ -17,6 +17,7 @@ import {
 } from '@react-navigation/native';
 import {RootStackParamList} from '../../../../../../Types/Types.ts';
 import RouteKey from '../../Navigation/Routes.ts';
+import RNBluetoothClassic from "react-native-bluetooth-classic";
 
 const SpinWheelScreen: FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -25,6 +26,11 @@ const SpinWheelScreen: FC = () => {
   const spinValue = useRef(new Animated.Value(0)).current;
 
   const spin = () => {
+    if(hasUserWon){
+      sendDeviceData("A");
+    } else {
+      sendDeviceData("B");
+    }
     spinValue.setValue(0);
     Animated.timing(spinValue, {
       toValue: 1,
@@ -41,6 +47,13 @@ const SpinWheelScreen: FC = () => {
     inputRange: [0, 1],
     outputRange: ['0deg', '2000deg'],
   });
+
+  const sendDeviceData = async (message:string)  => {
+    await RNBluetoothClassic.writeToDevice(
+      "98:D3:91:FD:F7:E2",
+      message,
+    );
+  }
 
   useEffect(() => {
     if (redirect) {

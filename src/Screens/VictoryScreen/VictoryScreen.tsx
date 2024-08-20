@@ -7,19 +7,25 @@ import {
 import {RootStackParamList} from '../../../../../../Types/Types.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import usePersistentState from '../../Hooks/usePersistentState.tsx';
+import React from 'react';
+import RNBluetoothClassic from "react-native-bluetooth-classic";
 
 const VictoryScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {store: first_name} = usePersistentState('first_name');
 
+  const sendDeviceData = async (message:string)  => {
+    await RNBluetoothClassic.writeToDevice(
+      "98:D3:91:FD:F7:E2",
+      message,
+    );
+  }
+
   const handleBackHome = () => {
+    sendDeviceData("C");
     AsyncStorage.clear().then(() =>
       navigation.dispatch(StackActions.replace('LoginScreen')),
     );
-  };
-
-  const handleNavigation = () => {
-    navigation.dispatch(StackActions.replace('SpinWheelScreen'));
   };
 
   return (

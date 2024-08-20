@@ -6,8 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  ImageBackground,
-} from 'react-native';
+  ImageBackground, Platform, ToastAndroid
+} from "react-native";
 import {theme} from '../../Constants/Colors.ts';
 import {useAuth} from '../../Hooks/useAuth.tsx';
 import {
@@ -18,6 +18,8 @@ import {
 import {SelectList} from 'react-native-dropdown-select-list';
 import {RootStackParamList} from '../../../../../../Types/Types.ts';
 import {useAppContext} from '../../Hooks/useAppContext.tsx';
+import RouteKey from "../../Navigation/Routes.ts";
+import RNBluetoothClassic from "react-native-bluetooth-classic";
 
 const LoginScreen = () => {
   const {setSubjectType: setSubjectTypeContext} = useAppContext();
@@ -26,6 +28,7 @@ const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [subjectType, setSubjectType] = useState<string | null>(null);
+  const [connectionSuccess, setConnectionSuccess] = useState(false);
 
   const data = [
     {key: '1', value: 'Optiunea 1'},
@@ -59,6 +62,35 @@ const LoginScreen = () => {
       Alert.alert('eroare login');
     }
   }, [loginError]);
+
+  const handleConnectToDevice = async () => {
+    const deviceAddress = "98:D3:91:FD:F7:E2";
+    try {
+      let connection = await RNBluetoothClassic.isDeviceConnected(deviceAddress);
+      if (!connection) {
+        ToastAndroid.show(`Attempting connection with device at address: ${deviceAddress}`, ToastAndroid.SHORT);
+        try {
+           await RNBluetoothClassic.connectToDevice(deviceAddress, {
+             //@ts-ignore
+            CONNECTOR_TYPE: 'rfcomm',
+            DELIMITER: '\n',
+            DEVICE_CHARSET: Platform.OS === 'ios' ? 1536 : 'utf-8',
+          });
+          ToastAndroid.show('Connection successful', ToastAndroid.SHORT);
+          setConnectionSuccess(true);
+
+        } catch (e) {
+          ToastAndroid.show('Connection error', ToastAndroid.SHORT);
+        } finally {
+        }
+      } else {
+        ToastAndroid.show('Already connected to device', ToastAndroid.SHORT);
+        setConnectionSuccess(true);
+      }
+    } catch (e) {
+      ToastAndroid.show('Error checking connection', ToastAndroid.SHORT);
+    }
+  }
 
   return (
     <ImageBackground
@@ -94,8 +126,13 @@ const LoginScreen = () => {
           />
         </View>
         <View style={styles.bottomContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>START</Text>
+          <TouchableOpacity
+            style={ connectionSuccess? styles.button : styles.buttonConnect}
+            onPress={connectionSuccess ? handleLogin : handleConnectToDevice}
+          >
+            <Text style={styles.buttonText}>
+              {connectionSuccess ? "Login" : "Connect to Device"}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.registerButton}
@@ -148,6 +185,13 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: theme.startButton,
+    width: 300,
+    borderRadius: 30,
+    paddingVertical: 10,
+    marginBottom: 20,
+  },
+  buttonConnect: {
+    backgroundColor: theme.hyperlink,
     width: 300,
     borderRadius: 30,
     paddingVertical: 10,
