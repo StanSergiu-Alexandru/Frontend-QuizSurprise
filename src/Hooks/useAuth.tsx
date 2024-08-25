@@ -22,6 +22,7 @@ const useAuthService = () => {
       username: username,
       password: password,
     };
+    console.log(payload);
     sendLoginPayload(payload);
   };
 
@@ -40,6 +41,10 @@ const useAuthService = () => {
         navigation.dispatch(StackActions.replace(RouteKey.QUESTION_SCREEN));
       }
     }
+  }, [loginError, loginResponse, loginLoading]);
+
+  useEffect(() => {
+    console.log(loginResponse, loginError, loginLoading);
   }, [loginError, loginResponse, loginLoading]);
 
   return {

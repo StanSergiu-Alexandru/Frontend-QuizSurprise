@@ -6,8 +6,10 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  ImageBackground, Platform, ToastAndroid
-} from "react-native";
+  ImageBackground,
+  Platform,
+  ToastAndroid,
+} from 'react-native';
 import {theme} from '../../Constants/Colors.ts';
 import {useAuth} from '../../Hooks/useAuth.tsx';
 import {
@@ -18,10 +20,12 @@ import {
 import {SelectList} from 'react-native-dropdown-select-list';
 import {RootStackParamList} from '../../../../../../Types/Types.ts';
 import {useAppContext} from '../../Hooks/useAppContext.tsx';
-import RouteKey from "../../Navigation/Routes.ts";
-import RNBluetoothClassic from "react-native-bluetooth-classic";
+import RouteKey from '../../Navigation/Routes.ts';
+import RNBluetoothClassic from 'react-native-bluetooth-classic';
 
 const LoginScreen = () => {
+  const [showDev, setShowDev] = useState<boolean>(false);
+  const [number, setNumber] = useState<string>('0');
   const {setSubjectType: setSubjectTypeContext} = useAppContext();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {logUserIn, loginError} = useAuth();
@@ -36,6 +40,18 @@ const LoginScreen = () => {
     {key: '3', value: 'Optiunea 3'},
     {key: '4', value: 'sfi'},
   ];
+
+  const sendData = () => {
+    sendDeviceData(number);
+  };
+
+  const handleInputChange = (input: any) => {
+    setNumber(input);
+  };
+
+  const sendDeviceData = async (message: string) => {
+    await RNBluetoothClassic.writeToDevice('98:D3:91:FD:F7:E2', message);
+  };
 
   const handleUsernameChange = useCallback((text: string) => {
     setUsername(text);
@@ -64,21 +80,25 @@ const LoginScreen = () => {
   }, [loginError]);
 
   const handleConnectToDevice = async () => {
-    const deviceAddress = "98:D3:91:FD:F7:E2";
+    const deviceAddress = '98:D3:91:FD:F7:E2';
     try {
-      let connection = await RNBluetoothClassic.isDeviceConnected(deviceAddress);
+      let connection = await RNBluetoothClassic.isDeviceConnected(
+        deviceAddress,
+      );
       if (!connection) {
-        ToastAndroid.show(`Attempting connection with device at address: ${deviceAddress}`, ToastAndroid.SHORT);
+        ToastAndroid.show(
+          `Attempting connection with device at address: ${deviceAddress}`,
+          ToastAndroid.SHORT,
+        );
         try {
-           await RNBluetoothClassic.connectToDevice(deviceAddress, {
-             //@ts-ignore
+          await RNBluetoothClassic.connectToDevice(deviceAddress, {
+            //@ts-ignore
             CONNECTOR_TYPE: 'rfcomm',
             DELIMITER: '\n',
             DEVICE_CHARSET: Platform.OS === 'ios' ? 1536 : 'utf-8',
           });
           ToastAndroid.show('Connection successful', ToastAndroid.SHORT);
           setConnectionSuccess(true);
-
         } catch (e) {
           ToastAndroid.show('Connection error', ToastAndroid.SHORT);
         } finally {
@@ -90,13 +110,18 @@ const LoginScreen = () => {
     } catch (e) {
       ToastAndroid.show('Error checking connection', ToastAndroid.SHORT);
     }
-  }
+  };
 
   return (
     <ImageBackground
       source={require('../../Images/QuestionScreen_Background.png')}
       style={styles.imageBackground}>
       <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.showDevButton}
+          onPress={() => setShowDev(!showDev)}>
+          <Text style={styles.buttonText}>Dev</Text>
+        </TouchableOpacity>
         <View style={styles.middleContainer}>
           <TextInput
             style={styles.inputField}
@@ -127,11 +152,10 @@ const LoginScreen = () => {
         </View>
         <View style={styles.bottomContainer}>
           <TouchableOpacity
-            style={ connectionSuccess? styles.button : styles.buttonConnect}
-            onPress={connectionSuccess ? handleLogin : handleConnectToDevice}
-          >
+            style={connectionSuccess ? styles.button : styles.buttonConnect}
+            onPress={connectionSuccess ? handleLogin : handleConnectToDevice}>
             <Text style={styles.buttonText}>
-              {connectionSuccess ? "Login" : "Connect to Device"}
+              {connectionSuccess ? 'Login' : 'Connect to Device'}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -139,6 +163,20 @@ const LoginScreen = () => {
             onPress={handleRegisterRedirect}>
             <Text style={styles.buttonText}>INREGISTREAZA-TE</Text>
           </TouchableOpacity>
+          {showDev && (
+            <>
+              <TextInput
+                style={styles.inputField}
+                keyboardType="numeric"
+                value={number !== null ? String(number) : ''}
+                onChangeText={handleInputChange}
+                placeholder="Type a number"
+              />
+              <TouchableOpacity style={styles.button} onPress={sendData}>
+                <Text style={styles.buttonText}>Trimite numar</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       </View>
     </ImageBackground>
@@ -149,6 +187,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
+  },
+  showDevButton: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    marginLeft: 10,
+    marginTop: 10,
+    paddingHorizontal: 10,
+    backgroundColor: 'gray',
+    borderRadius: 30,
+    paddingVertical: 10,
+    marginBottom: 20,
   },
   imageBackground: {
     flex: 1,
