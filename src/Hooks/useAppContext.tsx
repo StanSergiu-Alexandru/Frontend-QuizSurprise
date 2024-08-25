@@ -2,6 +2,8 @@ import React, {createContext, useState, useContext, ReactNode} from 'react';
 import {QuestionType} from '../../../../../Types/Types.ts';
 
 interface AppContextType {
+  userId: number;
+  setUserId: React.Dispatch<React.SetStateAction<number>>;
   firstName: string;
   setFirstName: React.Dispatch<React.SetStateAction<string>>;
   subjectType: string | null;
@@ -23,6 +25,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({children}) => {
   const [subjectType, setSubjectType] = useState<string | null>('');
   const [hasUserWon, setHasUserWon] = useState<boolean>(false);
   const [question, setQuestion] = useState<QuestionType | undefined>(undefined);
+  const [userId, setUserId] = useState<number>(0);
 
   return (
     <AppContext.Provider
@@ -35,6 +38,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({children}) => {
         setHasUserWon,
         question,
         setQuestion,
+        userId,
+        setUserId,
       }}>
       {children}
     </AppContext.Provider>

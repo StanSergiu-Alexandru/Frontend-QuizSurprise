@@ -22,6 +22,7 @@ import {
 } from '@react-navigation/native';
 import {useAppContext} from '../../Hooks/useAppContext.tsx';
 import RouteKey from '../../Navigation/Routes.ts';
+import usePersistentState from "../../Hooks/usePersistentState.tsx";
 
 const QuestionScreen: React.FC = () => {
   const {
@@ -39,6 +40,7 @@ const QuestionScreen: React.FC = () => {
     requestUrls.validateQuestion(question?.id),
   );
   const token = useValidateUser();
+  const {store: userId} = usePersistentState('user_id');
 
   useEffect(() => {
     getQuestionsRequest(token.token);

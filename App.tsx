@@ -15,9 +15,7 @@ function App(): React.JSX.Element {
       );
 
       if (locationPermission) {
-        console.log('Location permission granted');
       } else {
-        console.log('Location permission not granted');
         const locationRequest = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           {
@@ -29,7 +27,6 @@ function App(): React.JSX.Element {
           },
         );
 
-        console.log(locationRequest);
       }
 
       // Check Bluetooth scan permission
@@ -38,9 +35,7 @@ function App(): React.JSX.Element {
       );
 
       if (bluetoothScanPermission) {
-        console.log('Bluetooth scan permission granted');
       } else {
-        console.log('Bluetooth scan permission not granted');
         const bluetoothScanRequest = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
           {
@@ -52,7 +47,6 @@ function App(): React.JSX.Element {
           },
         );
 
-        console.log(bluetoothScanRequest);
       }
 
       // Check Bluetooth connect permission
@@ -61,9 +55,7 @@ function App(): React.JSX.Element {
       );
 
       if (bluetoothConnectPermission) {
-        console.log('Bluetooth connect permission granted');
       } else {
-        console.log('Bluetooth connect permission not granted');
         const bluetoothConnectRequest = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
           {
@@ -75,7 +67,6 @@ function App(): React.JSX.Element {
           },
         );
 
-        console.log(bluetoothConnectRequest);
       }
     } catch (err) {
       console.warn(err);

@@ -16,7 +16,6 @@ const LoseScreen = () => {
   const {question} = useAppContext();
 
   useEffect(() => {
-    console.log(question);
   }, [question]);
 
   const sendDeviceData = async (message:string)  => {

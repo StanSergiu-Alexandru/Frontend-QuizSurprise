@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  ImageBackground, Platform, ToastAndroid
+  ImageBackground, Platform, ToastAndroid, Image
 } from "react-native";
 import {theme} from '../../Constants/Colors.ts';
 import {useAuth} from '../../Hooks/useAuth.tsx';
@@ -18,8 +18,8 @@ import {
 import {SelectList} from 'react-native-dropdown-select-list';
 import {RootStackParamList} from '../../../../../../Types/Types.ts';
 import {useAppContext} from '../../Hooks/useAppContext.tsx';
-import RouteKey from "../../Navigation/Routes.ts";
 import RNBluetoothClassic from "react-native-bluetooth-classic";
+import routes from "../../Navigation/Routes.ts";
 
 const LoginScreen = () => {
   const {setSubjectType: setSubjectTypeContext} = useAppContext();
@@ -54,8 +54,13 @@ const LoginScreen = () => {
   };
 
   const handleRegisterRedirect = () => {
-    navigation.dispatch(StackActions.replace('RegisterScreen'));
+    navigation.dispatch(StackActions.replace(routes.REGISTER_SCREEN));
   };
+
+  const handleRankingsRedirect = () => {
+    navigation.navigate(routes.RANKINGS_SCREEN);
+
+  }
 
   useEffect(() => {
     if (loginError !== null) {
@@ -96,6 +101,9 @@ const LoginScreen = () => {
     <ImageBackground
       source={require('../../Images/QuestionScreen_Background.png')}
       style={styles.imageBackground}>
+      <TouchableOpacity style={styles.trophyContainer} onPress={handleRankingsRedirect}>
+        <Image source={require('../../Images/trophy.png')} style={styles.trophy}></Image>
+      </TouchableOpacity>
       <View style={styles.container}>
         <View style={styles.middleContainer}>
           <TextInput
@@ -209,6 +217,15 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
+  trophyContainer: {
+    position: 'absolute',
+    top:0,
+    right:0,
+  },
+  trophy:{
+    width: 150,
+    height: 150,
+  }
 });
 
 export default LoginScreen;

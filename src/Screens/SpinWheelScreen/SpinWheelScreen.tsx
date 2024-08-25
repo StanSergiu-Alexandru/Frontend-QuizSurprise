@@ -18,12 +18,21 @@ import {
 import {RootStackParamList} from '../../../../../../Types/Types.ts';
 import RouteKey from '../../Navigation/Routes.ts';
 import RNBluetoothClassic from "react-native-bluetooth-classic";
+import usePostCustomFetch from "../../Hooks/usePostCustomFetch.tsx";
+import requestUrls from "../../Backend/requestUrls.tsx";
+import useValidateUser from "../../Hooks/useValidateUser.tsx";
+import usePersistentState from "../../Hooks/usePersistentState.tsx";
 
 const SpinWheelScreen: FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const {token} = useValidateUser();
   const {hasUserWon} = useAppContext();
+  const {store: userId} = usePersistentState('user_id');
   const [redirect, setRedirect] = useState(false);
   const spinValue = useRef(new Animated.Value(0)).current;
+  const {fetcher: postAnswersRequest, response, error} = usePostCustomFetch<any, any>(
+    requestUrls.increaseUserPoint(userId),
+  );
 
   const spin = () => {
     if(hasUserWon){
@@ -41,6 +50,17 @@ const SpinWheelScreen: FC = () => {
     setTimeout(() => {
       setRedirect(true);
     }, 2300);
+    if(hasUserWon && userId!==0) {
+      fetch(requestUrls.increaseUserPoint(userId), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "totalPoints": 1
+        }),
+      });
+    }
   };
 
   const spinAnimation = spinValue.interpolate({
