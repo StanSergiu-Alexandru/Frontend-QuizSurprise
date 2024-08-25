@@ -6,6 +6,7 @@ enum RouteKey {
   REGISTER_SCREEN = 'RegisterScreen',
   SPIN_WHEEL_SCREEN = 'SpinWheelScreen',
   LOSE_SCREEN = 'LoseScreen',
+  RANKINGS_SCREEN = 'RankingsScreen',
 }
 
 export default RouteKey;

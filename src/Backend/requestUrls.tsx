@@ -1,14 +1,22 @@
+const baseUrl = 'http://192.168.0.127:8083';
+const TabletUrl = 'http://192.168.0.127:8083';
+
 const requestUrls = {
-  authLogin: 'http://192.168.0.127:8083/auth/login',
-  authRegister: 'http://192.168.0.127:8083/auth/register',
+  authLogin: `${baseUrl}/auth/login`,
+  authRegister: `${baseUrl}/auth/register`,
 
   getQuestion(type: string) {
-    return `http://192.168.0.127:8083/quiz/generateQuestion?subjectType=${type}`;
+    return `${baseUrl}/quiz/generateQuestion?subjectType=${type}`;
   },
 
   validateQuestion(id: number | undefined) {
-    return `http://192.168.0.127:8083/quiz/check-answers/${id}`;
+    return `${baseUrl}/quiz/check-answers/${id}`;
   },
+
+  increaseUserPoint(id: number) {
+    return `${baseUrl}/quizsurprise/userpoints/update/${id}`;
+  },
+  getUsersAndPoints: `${baseUrl}/quizsurprise/getUsersByPoints`,
 };
 
 export default requestUrls;

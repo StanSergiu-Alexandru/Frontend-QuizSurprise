@@ -4,25 +4,21 @@ import {
   StackActions,
   useNavigation,
 } from '@react-navigation/native';
-import {RootStackParamList} from '../../../../../../Types/Types.ts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import usePersistentState from '../../Hooks/usePersistentState.tsx';
 import React from 'react';
-import RNBluetoothClassic from "react-native-bluetooth-classic";
+import RNBluetoothClassic from 'react-native-bluetooth-classic';
 
 const VictoryScreen = () => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<NavigationProp<any>>();
   const {store: first_name} = usePersistentState('first_name');
 
-  const sendDeviceData = async (message:string)  => {
-    await RNBluetoothClassic.writeToDevice(
-      "98:D3:91:FD:F7:E2",
-      message,
-    );
-  }
+  const sendDeviceData = async (message: string) => {
+    await RNBluetoothClassic.writeToDevice('98:D3:91:FD:F7:E2', message);
+  };
 
   const handleBackHome = () => {
-    sendDeviceData("C");
+    sendDeviceData('C');
     AsyncStorage.clear().then(() =>
       navigation.dispatch(StackActions.replace('LoginScreen')),
     );
@@ -32,7 +28,7 @@ const VictoryScreen = () => {
     <View style={styles.container}>
       <Image
         source={require('../../Images/WinScreen_Illusion.jpg')}
-        style={{flex: 1, width: '100%', height: '100%'}}
+        style={styles.imageStyle}
         resizeMode={'cover'}
       />
       <View style={styles.contentContainer}>
@@ -77,5 +73,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
+  imageStyle: {flex: 1, width: '100%', height: '100%'},
 });
 export default VictoryScreen;

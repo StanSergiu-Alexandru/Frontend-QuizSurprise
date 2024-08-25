@@ -6,10 +6,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import AnswerList from '../../Components/AnswerList.tsx';
-import {
-  QuestionType,
-  RootStackParamList,
-} from '../../../../../../Types/Types.ts';
 import React, {useEffect, useState} from 'react';
 import useGetCustomFetch from '../../Hooks/useGetCustomFetch.tsx';
 import requestUrls from '../../Backend/requestUrls.tsx';
@@ -22,6 +18,8 @@ import {
 } from '@react-navigation/native';
 import {useAppContext} from '../../Hooks/useAppContext.tsx';
 import RouteKey from '../../Navigation/Routes.ts';
+import usePersistentState from '../../Hooks/usePersistentState.tsx';
+import {RootStackParamList} from '../../Types/Types.ts';
 
 const QuestionScreen: React.FC = () => {
   const {
@@ -30,15 +28,16 @@ const QuestionScreen: React.FC = () => {
     setQuestion: setQuestionContext,
   } = useAppContext();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const [question, setQuestion] = useState<QuestionType>();
+  const [question, setQuestion] = useState<any>();
   const [questionAnswer, setQuestionAnswer] = useState<boolean | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   const {fetcher: getQuestionsRequest, response: questionsResponse} =
-    useGetCustomFetch<QuestionType, any>(requestUrls.getQuestion(subjectType));
+    useGetCustomFetch<any, any>(requestUrls.getQuestion(subjectType));
   const {fetcher: postAnswersRequest, response} = usePostCustomFetch<any, any>(
     requestUrls.validateQuestion(question?.id),
   );
   const token = useValidateUser();
+  const {store: userId} = usePersistentState('user_id');
 
   useEffect(() => {
     getQuestionsRequest(token.token);
