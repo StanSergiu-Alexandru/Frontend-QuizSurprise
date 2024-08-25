@@ -9,7 +9,7 @@ import VictoryScreen from '../Screens/VictoryScreen/VictoryScreen.tsx';
 import RegisterScreen from '../Screens/RegisterScreen/RegisterScreen.tsx';
 import SpinWheelScreen from '../Screens/SpinWheelScreen/SpinWheelScreen.tsx';
 import LoseScreen from '../Screens/LoseScreen/LoseScreen.tsx';
-import RankingsScreen from "../Screens/RankingsScreen/RankingsScreen.tsx";
+import RankingsScreen from '../Screens/RankingsScreen/RankingsScreen.tsx';
 
 const screenRoutes = [
   {name: RouteKey.QUESTION_SCREEN, component: QuestionScreen},

@@ -26,7 +26,6 @@ function App(): React.JSX.Element {
             buttonPositive: 'OK',
           },
         );
-
       }
 
       // Check Bluetooth scan permission
@@ -46,7 +45,6 @@ function App(): React.JSX.Element {
             buttonPositive: 'OK',
           },
         );
-
       }
 
       // Check Bluetooth connect permission
@@ -66,7 +64,6 @@ function App(): React.JSX.Element {
             buttonPositive: 'OK',
           },
         );
-
       }
     } catch (err) {
       console.warn(err);

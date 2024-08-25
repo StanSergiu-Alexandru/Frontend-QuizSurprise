@@ -33,8 +33,7 @@ const useAuthService = () => {
     setToken('');
   };
 
-  useEffect(() => {
-  }, [loginError,loginResponse, loginLoading]);
+  useEffect(() => {}, [loginError, loginResponse, loginLoading]);
 
   useEffect(() => {
     if (loginResponse) {

@@ -19,17 +19,15 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
-import {RootStackParamList} from '../../../../../../Types/Types.ts';
 import {useAppContext} from '../../Hooks/useAppContext.tsx';
-import RouteKey from '../../Navigation/Routes.ts';
-import RNBluetoothClassic from "react-native-bluetooth-classic";
-import routes from "../../Navigation/Routes.ts";
+import RNBluetoothClassic from 'react-native-bluetooth-classic';
+import routes from '../../Navigation/Routes.ts';
 
 const LoginScreen = () => {
   const [showDev, setShowDev] = useState<boolean>(false);
   const [number, setNumber] = useState<string>('0');
   const {setSubjectType: setSubjectTypeContext} = useAppContext();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<NavigationProp<any>>();
   const {logUserIn, loginError} = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -77,8 +75,7 @@ const LoginScreen = () => {
 
   const handleRankingsRedirect = () => {
     navigation.navigate(routes.RANKINGS_SCREEN);
-
-  }
+  };
 
   useEffect(() => {
     if (loginError !== null) {
@@ -106,7 +103,6 @@ const LoginScreen = () => {
           });
           ToastAndroid.show('Connection successful', ToastAndroid.SHORT);
           setConnectionSuccess(true);
-
         } catch (e) {
           ToastAndroid.show('Connection error', ToastAndroid.SHORT);
         } finally {
@@ -124,14 +120,16 @@ const LoginScreen = () => {
     <ImageBackground
       source={require('../../Images/QuestionScreen_Background.png')}
       style={styles.imageBackground}>
-      <TouchableOpacity style={styles.trophyContainer} onPress={handleRankingsRedirect}>
-        <Image source={require('../../Images/trophy.png')} style={styles.trophy}></Image>
+      <TouchableOpacity
+        style={styles.trophyContainer}
+        onPress={handleRankingsRedirect}>
+        <Text style={styles.buttonText}>CLASAMENT</Text>
       </TouchableOpacity>
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.showDevButton}
           onPress={() => setShowDev(!showDev)}>
-          <Text style={styles.buttonText}>Dev</Text>
+          <Text style={styles.buttonText}>DEV</Text>
         </TouchableOpacity>
         <View style={styles.middleContainer}>
           <TextInput
@@ -148,12 +146,13 @@ const LoginScreen = () => {
             secureTextEntry={true}
           />
           <SelectList
-            setSelected={(val: React.SetStateAction<string | null>) => {
+            setSelected={(val: React.SetStateAction<any>) => {
               setSubjectType(val);
               setSubjectTypeContext(val);
             }}
             data={data}
             save="value"
+            placeholder={'Selectati Materia'}
             boxStyles={styles.dropdown}
             dropdownStyles={styles.dropdown}
             inputStyles={{color: 'black'}}
@@ -166,7 +165,7 @@ const LoginScreen = () => {
             style={connectionSuccess ? styles.button : styles.buttonConnect}
             onPress={connectionSuccess ? handleLogin : handleConnectToDevice}>
             <Text style={styles.buttonText}>
-              {connectionSuccess ? 'Login' : 'Connect to Device'}
+              {connectionSuccess ? 'LOGIN' : 'CONECTARE LA SISTEM'}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -272,13 +271,20 @@ const styles = StyleSheet.create({
   },
   trophyContainer: {
     position: 'absolute',
-    top:0,
-    right:0,
+    top: 0,
+    right: 0,
+    marginRight: 10,
+    marginTop: 10,
+    paddingHorizontal: 10,
+    backgroundColor: '#8B8000',
+    borderRadius: 30,
+    paddingVertical: 10,
+    marginBottom: 20,
   },
-  trophy:{
-    width: 150,
-    height: 150,
-  }
+  trophy: {
+    width: 100,
+    height: 100,
+  },
 });
 
 export default LoginScreen;

@@ -1,63 +1,56 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
 import {
   Image,
-  View,
   StyleSheet,
   ImageBackground,
   Animated,
   TouchableOpacity,
   Easing,
-  Text, Alert
-} from "react-native";
+  Text,
+} from 'react-native';
 import {useAppContext} from '../../Hooks/useAppContext.tsx';
 import {
   NavigationProp,
   StackActions,
   useNavigation,
 } from '@react-navigation/native';
-import {RootStackParamList} from '../../../../../../Types/Types.ts';
 import RouteKey from '../../Navigation/Routes.ts';
-import RNBluetoothClassic from "react-native-bluetooth-classic";
-import usePostCustomFetch from "../../Hooks/usePostCustomFetch.tsx";
-import requestUrls from "../../Backend/requestUrls.tsx";
-import useValidateUser from "../../Hooks/useValidateUser.tsx";
-import usePersistentState from "../../Hooks/usePersistentState.tsx";
+import RNBluetoothClassic from 'react-native-bluetooth-classic';
+import requestUrls from '../../Backend/requestUrls.tsx';
+import usePersistentState from '../../Hooks/usePersistentState.tsx';
+import {RootStackParamList} from '../../Types/Types.ts';
 
 const SpinWheelScreen: FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {token} = useValidateUser();
   const {hasUserWon} = useAppContext();
   const {store: userId} = usePersistentState('user_id');
   const [redirect, setRedirect] = useState(false);
   const spinValue = useRef(new Animated.Value(0)).current;
-  const {fetcher: postAnswersRequest, response, error} = usePostCustomFetch<any, any>(
-    requestUrls.increaseUserPoint(userId),
-  );
 
   const spin = () => {
-    if(hasUserWon){
-      sendDeviceData("A");
+    if (hasUserWon) {
+      sendDeviceData('A');
     } else {
-      sendDeviceData("B");
+      sendDeviceData('B');
     }
     spinValue.setValue(0);
     Animated.timing(spinValue, {
       toValue: 1,
-      duration: 2000,
+      duration: 13000,
       easing: Easing.linear,
       useNativeDriver: true,
     }).start();
     setTimeout(() => {
       setRedirect(true);
-    }, 2300);
-    if(hasUserWon && userId!==0) {
+    }, 13300);
+    if (hasUserWon && userId !== 0) {
       fetch(requestUrls.increaseUserPoint(userId), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "totalPoints": 1
+          totalPoints: 1,
         }),
       });
     }
@@ -68,12 +61,9 @@ const SpinWheelScreen: FC = () => {
     outputRange: ['0deg', '2000deg'],
   });
 
-  const sendDeviceData = async (message:string)  => {
-    await RNBluetoothClassic.writeToDevice(
-      "98:D3:91:FD:F7:E2",
-      message,
-    );
-  }
+  const sendDeviceData = async (message: string) => {
+    await RNBluetoothClassic.writeToDevice('98:D3:91:FD:F7:E2', message);
+  };
 
   useEffect(() => {
     if (redirect) {
