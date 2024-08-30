@@ -62,7 +62,7 @@ const AnswerList: FC<AnswerListProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '80%',
-    height: 50,
+    paddingVertical: 10,
     backgroundColor: 'white',
     borderRadius: 10,
     borderWidth: 2,

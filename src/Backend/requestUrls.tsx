@@ -1,4 +1,4 @@
-const baseUrl = 'http://192.168.0.127:8083';
+const baseUrl = 'http://192.168.1.196:8083';
 const TabletUrl = 'http://192.168.0.127:8083';
 
 const requestUrls = {
@@ -9,8 +9,8 @@ const requestUrls = {
     return `${baseUrl}/quiz/generateQuestion?subjectType=${type}`;
   },
 
-  validateQuestion(id: number | undefined) {
-    return `${baseUrl}/quiz/check-answers/${id}`;
+  validateQuestion(id: number | undefined, userId: number | undefined) {
+    return `${baseUrl}/quiz/check-answers/${id}/${userId}`;
   },
 
   increaseUserPoint(id: number) {

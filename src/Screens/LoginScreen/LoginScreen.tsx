@@ -8,7 +8,6 @@ import {
   Alert,
   ImageBackground,
   Platform,
-  Image,
   ToastAndroid,
 } from 'react-native';
 import {theme} from '../../Constants/Colors.ts';
@@ -35,10 +34,10 @@ const LoginScreen = () => {
   const [connectionSuccess, setConnectionSuccess] = useState(false);
 
   const data = [
-    {key: '1', value: 'Optiunea 1'},
-    {key: '2', value: 'Optiunea 2'},
-    {key: '3', value: 'Optiunea 3'},
-    {key: '4', value: 'sfi'},
+    {key: '1', value: 'SFI'},
+    {key: '2', value: 'CIM'},
+    {key: '3', value: 'CNMU'},
+    {key: '4', value: 'DCMT'},
   ];
 
   const sendData = () => {
@@ -79,7 +78,11 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (loginError !== null) {
-      Alert.alert('eroare login');
+      if (loginError.error) {
+        Alert.alert('eroare login', loginError.error);
+      } else {
+        Alert.alert('eroare login');
+      }
     }
   }, [loginError]);
 
@@ -91,7 +94,7 @@ const LoginScreen = () => {
       );
       if (!connection) {
         ToastAndroid.show(
-          `Attempting connection with device at address: ${deviceAddress}`,
+          `Se incearca conectarea la sistemul fizic: ${deviceAddress}`,
           ToastAndroid.SHORT,
         );
         try {
@@ -101,14 +104,14 @@ const LoginScreen = () => {
             DELIMITER: '\n',
             DEVICE_CHARSET: Platform.OS === 'ios' ? 1536 : 'utf-8',
           });
-          ToastAndroid.show('Connection successful', ToastAndroid.SHORT);
+          ToastAndroid.show('Conexiune cu succes!', ToastAndroid.SHORT);
           setConnectionSuccess(true);
         } catch (e) {
           ToastAndroid.show('Connection error', ToastAndroid.SHORT);
         } finally {
         }
       } else {
-        ToastAndroid.show('Already connected to device', ToastAndroid.SHORT);
+        ToastAndroid.show('Conexiune deja stabilita', ToastAndroid.SHORT);
         setConnectionSuccess(true);
       }
     } catch (e) {
@@ -165,7 +168,7 @@ const LoginScreen = () => {
             style={connectionSuccess ? styles.button : styles.buttonConnect}
             onPress={connectionSuccess ? handleLogin : handleConnectToDevice}>
             <Text style={styles.buttonText}>
-              {connectionSuccess ? 'LOGIN' : 'CONECTARE LA SISTEM'}
+              {connectionSuccess ? 'AUTENTIFICARE' : 'CONECTARE LA SISTEM'}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity

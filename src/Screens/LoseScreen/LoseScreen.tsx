@@ -1,6 +1,6 @@
 import {View, StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
 import {useAppContext} from '../../Hooks/useAppContext.tsx';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import AnswerList from '../../Components/AnswerList.tsx';
 import {
   NavigationProp,
@@ -11,6 +11,7 @@ import {RootStackParamList} from '../../../../../../Types/Types.ts';
 import RNBluetoothClassic from 'react-native-bluetooth-classic';
 
 const LoseScreen = () => {
+  const [remainingTime, setRemainingTime] = useState<number>(15);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const {question} = useAppContext();
@@ -25,6 +26,22 @@ const LoseScreen = () => {
     sendDeviceData('C');
     navigation.dispatch(StackActions.replace('LoginScreen'));
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRemainingTime((prevTime: number) => prevTime - 1);
+    }, 1000);
+
+    const timer = setTimeout(() => {
+      handleRedirectHome();
+      clearInterval(interval);
+    }, 15000);
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -48,12 +65,11 @@ const LoseScreen = () => {
               throw new Error('Function not implemented.');
             }}
           />
+          <Text style={styles.redirectText}>
+            Revenire la pagina initiala in{' '}
+            <Text style={{color: 'red'}}>{remainingTime} secunde.</Text>
+          </Text>
         </View>
-        <TouchableOpacity
-          style={styles.backHomeButton}
-          onPress={handleRedirectHome}>
-          <Text style={styles.buttonText}>Back Home</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -63,6 +79,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  redirectText: {
+    marginVertical: 30,
+    paddingLeft: 20,
+    color: 'black',
+    fontSize: 30,
   },
   imageContainer: {
     flex: 1,
@@ -84,6 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   questionText: {
+    textAlign: 'center',
     alignSelf: 'center',
     fontSize: 30,
     color: 'black',

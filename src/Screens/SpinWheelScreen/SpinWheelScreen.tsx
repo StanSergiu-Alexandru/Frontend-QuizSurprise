@@ -24,8 +24,10 @@ const SpinWheelScreen: FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {hasUserWon} = useAppContext();
   const {store: userId} = usePersistentState('user_id');
-  const [redirect, setRedirect] = useState(false);
+  const [redirect, setRedirect] = useState<boolean>(false);
   const spinValue = useRef(new Animated.Value(0)).current;
+
+  const deviceAddress = '98:D3:91:FD:F7:E2';
 
   const spin = () => {
     if (hasUserWon) {
@@ -36,13 +38,11 @@ const SpinWheelScreen: FC = () => {
     spinValue.setValue(0);
     Animated.timing(spinValue, {
       toValue: 1,
-      duration: 13000,
+      duration: 30000,
       easing: Easing.linear,
       useNativeDriver: true,
     }).start();
-    setTimeout(() => {
-      setRedirect(true);
-    }, 13300);
+
     if (hasUserWon && userId !== 0) {
       fetch(requestUrls.increaseUserPoint(userId), {
         method: 'POST',
@@ -58,12 +58,32 @@ const SpinWheelScreen: FC = () => {
 
   const spinAnimation = spinValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '2000deg'],
+    outputRange: ['0deg', '20000deg'],
   });
 
   const sendDeviceData = async (message: string) => {
-    await RNBluetoothClassic.writeToDevice('98:D3:91:FD:F7:E2', message);
+    await RNBluetoothClassic.writeToDevice(deviceAddress, message);
   };
+
+  useEffect(() => {
+    spin();
+  }, []);
+
+  useEffect(() => {
+    const subscription = RNBluetoothClassic.onDeviceRead(
+      deviceAddress,
+      event => {
+        if (event.data) {
+          setRedirect(true);
+        }
+      },
+    );
+
+    // Curățare la demontarea componentelor
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     if (redirect) {
@@ -73,7 +93,7 @@ const SpinWheelScreen: FC = () => {
         navigation.dispatch(StackActions.replace(RouteKey.LOSE_SCREEN));
       }
     }
-  }, [redirect]);
+  }, [redirect, hasUserWon]);
 
   return (
     <ImageBackground
@@ -91,9 +111,9 @@ const SpinWheelScreen: FC = () => {
           source={require('../../Images/wheelCenter.png')}
         />
       </ImageBackground>
-      <TouchableOpacity style={styles.wheelButton} onPress={spin}>
-        <Text style={styles.buttonText}>Invarte Roata</Text>
-      </TouchableOpacity>
+      {/*<TouchableOpacity style={styles.wheelButton} onPress={spin}>*/}
+      {/*  <Text style={styles.buttonText}>Invarte Roata</Text>*/}
+      {/*</TouchableOpacity>*/}
     </ImageBackground>
   );
 };
@@ -120,7 +140,6 @@ const styles = StyleSheet.create({
     zIndex: 99,
     transform: [{translateX: -127}, {translateY: -90}],
   },
-
   buttonText: {
     fontSize: 30,
     color: 'white',

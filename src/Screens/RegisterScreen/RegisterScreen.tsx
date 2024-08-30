@@ -59,7 +59,10 @@ const RegisterScreen = () => {
         Alert.alert('Success', 'Inregistrare cu succes.');
         navigation.dispatch(StackActions.replace('LoginScreen'));
       } else {
-        Alert.alert('Error', 'Inregistrare esuata.');
+        Alert.alert(
+          'Error',
+          'Inregistrare esuata.Nume de utilizator existent!',
+        );
       }
     } catch (error) {
       console.error('Register failed', error);
@@ -126,7 +129,7 @@ const RegisterScreen = () => {
           <TouchableOpacity
             style={styles.loginButton}
             onPress={handleLoginRedirect}>
-            <Text style={styles.buttonText}>CONECTARE</Text>
+            <Text style={styles.buttonText}>AUTENTIFICARE</Text>
           </TouchableOpacity>
         </View>
       </View>

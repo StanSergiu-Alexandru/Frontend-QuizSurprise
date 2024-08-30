@@ -26,7 +26,6 @@ const usePostCustomFetch = <Data extends any, Param extends any>(
 
       const response = await request.json();
       if (response.error) {
-        console.log(response);
         setServerError(response);
       } else {
         setApiData(response);
