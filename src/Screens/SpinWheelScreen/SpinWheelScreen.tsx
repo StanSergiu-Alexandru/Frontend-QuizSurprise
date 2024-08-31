@@ -71,12 +71,12 @@ const SpinWheelScreen: FC = () => {
 
   useEffect(() => {
     const subscription = RNBluetoothClassic.onDeviceRead(
-      deviceAddress,
-      event => {
-        if (event.data) {
-          setRedirect(true);
-        }
-      },
+        deviceAddress,
+        event => {
+          if (event.data) {
+            setRedirect(true);
+          }
+        },
     );
 
     // Curățare la demontarea componentelor
@@ -96,25 +96,25 @@ const SpinWheelScreen: FC = () => {
   }, [redirect, hasUserWon]);
 
   return (
-    <ImageBackground
-      style={styles.container}
-      source={require('../../Images/wheelBackground.webp')}>
       <ImageBackground
-        source={require('../../Images/wheel.png')}
-        style={styles.imageBackground}>
-        <Animated.Image
-          source={require('../../Images/wheelSpinner.png')}
-          style={[styles.wheelCenter, {transform: [{rotate: spinAnimation}]}]}
-        />
-        <Image
-          style={styles.wheelPointer}
-          source={require('../../Images/wheelCenter.png')}
-        />
+          style={styles.container}
+          source={require('../../Images/wheelBackground.webp')}>
+        <ImageBackground
+            source={require('../../Images/wheel.png')}
+            style={styles.imageBackground}>
+          <Animated.Image
+              source={require('../../Images/wheelSpinner.png')}
+              style={[styles.wheelCenter, {transform: [{rotate: spinAnimation}]}]}
+          />
+          <Image
+              style={styles.wheelPointer}
+              source={require('../../Images/wheelCenter.png')}
+          />
+        </ImageBackground>
+        {/*<TouchableOpacity style={styles.wheelButton} onPress={spin}>*/}
+        {/*  <Text style={styles.buttonText}>Invarte Roata</Text>*/}
+        {/*</TouchableOpacity>*/}
       </ImageBackground>
-      {/*<TouchableOpacity style={styles.wheelButton} onPress={spin}>*/}
-      {/*  <Text style={styles.buttonText}>Invarte Roata</Text>*/}
-      {/*</TouchableOpacity>*/}
-    </ImageBackground>
   );
 };
 
