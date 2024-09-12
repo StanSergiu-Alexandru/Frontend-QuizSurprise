@@ -4,6 +4,7 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import AnswerList from '../../Components/AnswerList.tsx';
 import React, {useEffect, useState} from 'react';
@@ -27,6 +28,7 @@ const QuestionScreen: React.FC = () => {
     setHasUserWon,
     setQuestion: setQuestionContext,
   } = useAppContext();
+  const {store: userId} = usePersistentState('user_id');
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [question, setQuestion] = useState<any>();
   const [questionAnswer, setQuestionAnswer] = useState<boolean | null>(null);
@@ -34,10 +36,14 @@ const QuestionScreen: React.FC = () => {
   const {fetcher: getQuestionsRequest, response: questionsResponse} =
     useGetCustomFetch<any, any>(requestUrls.getQuestion(subjectType));
   const {fetcher: postAnswersRequest, response} = usePostCustomFetch<any, any>(
-    requestUrls.validateQuestion(question?.id),
+    requestUrls.validateQuestion(question?.id, userId),
   );
   const token = useValidateUser();
-  const {store: userId} = usePersistentState('user_id');
+
+  useEffect(() => {
+    console.log(requestUrls.validateQuestion(question?.id, userId));
+    console.log(response);
+  }, [response]);
 
   useEffect(() => {
     getQuestionsRequest(token.token);
@@ -65,10 +71,6 @@ const QuestionScreen: React.FC = () => {
     postAnswersRequest({answers: newAnswers}, token.token);
   };
 
-  const handleRedirectHome = () => {
-    navigation.dispatch(StackActions.replace('LoginScreen'));
-  };
-
   useEffect(() => {
     setQuestionAnswer(response);
   }, [response]);
@@ -90,22 +92,21 @@ const QuestionScreen: React.FC = () => {
           <Text style={styles.questionText}>{question?.question}</Text>
         </View>
       </ImageBackground>
-      <View style={styles.contentContainer}>
+      <ScrollView
+        style={styles.contentContainer}
+        contentContainerStyle={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <AnswerList
           answers={question?.answers}
           selectedAnswers={selectedAnswers}
           onSelectAnswer={handleSelectAnswer}
         />
-        {questionAnswer === null ? (
-          <TouchableOpacity style={styles.button} onPress={validateAnswers}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={styles.button} onPress={handleRedirectHome}>
-            <Text style={styles.buttonText}>Go Home</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+        <TouchableOpacity style={styles.button} onPress={validateAnswers}>
+          <Text style={styles.buttonText}>TRIMITE</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
@@ -132,19 +133,17 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 140,
+    marginTop: 140,
   },
   button: {
     backgroundColor: 'red',
     width: 300,
     borderRadius: 30,
-    paddingVertical: 5,
+    paddingVertical: 10,
     marginTop: 20,
   },
   buttonText: {
-    fontSize: 30,
+    fontSize: 27,
     alignSelf: 'center',
     color: 'white',
     fontWeight: 'bold',

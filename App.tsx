@@ -4,7 +4,8 @@ import RoutesMapping from './src/Navigation/Navigator.tsx';
 import {NavigationContainer} from '@react-navigation/native';
 import {AuthProvider} from './src/Hooks/useAuth.tsx';
 import {AppProvider} from './src/Hooks/useAppContext.tsx';
-import {PermissionsAndroid, Platform} from 'react-native';
+import {PermissionsAndroid} from 'react-native';
+import LoseScreen from './src/Screens/LoseScreen/LoseScreen.tsx';
 
 function App(): React.JSX.Element {
   async function checkPermissions() {

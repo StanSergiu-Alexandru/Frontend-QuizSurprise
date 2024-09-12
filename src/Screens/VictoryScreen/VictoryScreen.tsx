@@ -6,10 +6,11 @@ import {
 } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import usePersistentState from '../../Hooks/usePersistentState.tsx';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import RNBluetoothClassic from 'react-native-bluetooth-classic';
 
 const VictoryScreen = () => {
+  const [remainingTime, setRemainingTime] = useState<number>(15);
   const navigation = useNavigation<NavigationProp<any>>();
   const {store: first_name} = usePersistentState('first_name');
 
@@ -24,6 +25,22 @@ const VictoryScreen = () => {
     );
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRemainingTime((prevTime: number) => prevTime - 1);
+    }, 1000);
+
+    const timer = setTimeout(() => {
+      handleBackHome();
+      clearInterval(interval);
+    }, 15000);
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
       <Image
@@ -34,12 +51,16 @@ const VictoryScreen = () => {
       <View style={styles.contentContainer}>
         <Text style={styles.text}>Felicitari, {first_name}!</Text>
         <Text style={styles.text}>Ai raspuns corect la intrebare!</Text>
+        <Text style={styles.victoryText}>
+          Mai ai <Text style={styles.redText}>{remainingTime} secunde </Text>
+          pentru a revendica premiul
+        </Text>
 
-        <TouchableOpacity
-          style={styles.backHomeButton}
-          onPress={handleBackHome}>
-          <Text style={styles.buttonText}>Back Home</Text>
-        </TouchableOpacity>
+        {/*<TouchableOpacity*/}
+        {/*  style={styles.backHomeButton}*/}
+        {/*  onPress={handleBackHome}>*/}
+        {/*  <Text style={styles.buttonText}>Back Home</Text>*/}
+        {/*</TouchableOpacity>*/}
       </View>
     </View>
   );
@@ -48,6 +69,7 @@ const VictoryScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   contentContainer: {
     flex: 1,
@@ -58,20 +80,13 @@ const styles = StyleSheet.create({
     fontSize: 50,
     color: 'black',
   },
-
-  backHomeButton: {
-    backgroundColor: 'red',
-    width: '80%',
-    height: 70,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 50,
+  victoryText: {
+    paddingTop: 40,
+    fontSize: 35,
+    color: 'black',
   },
-  buttonText: {
-    fontSize: 30,
-    color: 'white',
-    fontWeight: 'bold',
+  redText: {
+    color: 'red',
   },
   imageStyle: {flex: 1, width: '100%', height: '100%'},
 });
